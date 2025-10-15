@@ -4,8 +4,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
   name: 'Default'
-  demands:
-    -agent.name -equals 'DESKTOP-DFGLDAQ'
 
 variables:
   buildConfiguration: 'Release'
