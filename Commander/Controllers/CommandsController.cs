@@ -14,7 +14,7 @@ namespace Commander.Controllers
         private readonly ICommanderRepo _repository;
         private readonly IMapper _mapper;
 
-        // randon change
+        // randon change 
 
         public CommandsController(ICommanderRepo repository, IMapper mapper)
         {
