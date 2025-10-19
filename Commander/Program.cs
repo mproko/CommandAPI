@@ -1,5 +1,6 @@
 
 using Commander.Data;
+using Commander.Profiles;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 
@@ -13,8 +14,8 @@ namespace Commander
 
             // Add services to the container.
 
-            var connectionString = builder.Configuration.GetConnectionString("CommanderConnection");
-            builder.Services.AddDbContext<CommanderContext>(opt => opt.UseSqlServer(connectionString));
+            var connectionString = builder.Configuration.GetConnectionString("PostgreSqlConnection");
+            builder.Services.AddDbContext<CommanderContext>(opt => opt.UseNpgsql(connectionString));
 
             builder.Services.AddControllers().AddNewtonsoftJson(s =>
             {
@@ -41,7 +42,7 @@ namespace Commander
 
             app.UseAuthorization();
 
-
+            app.UseMiddleware<ValidationMappingMiddleware>();
             app.MapControllers();
 
             app.Run();
