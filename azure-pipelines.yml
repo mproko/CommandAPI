@@ -28,5 +28,9 @@ steps:
     projects: '**/Commander/*.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'publish artifacts'
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'CommandAzureConnection'
+    appType: 'webApp'
+    appName: 'commandapi'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
