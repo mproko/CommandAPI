@@ -1,26 +1,27 @@
 ﻿using Commander.Dtos;
 using FluentValidation;
+using System.Net;
 
 namespace Commander.Profiles
 {
-    public class ValidationMappingMiddleware
+    public class ValidationMappingMiddleware : IMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly ILogger<ValidationMappingMiddleware> _logger;
 
-        public ValidationMappingMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
+        public ValidationMappingMiddleware(ILogger<ValidationMappingMiddleware> logger) => 
+            _logger = logger;
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
             {
-                await _next(context);
+                await next(context);
             }
             catch (ValidationException ex)
             {
-                context.Response.StatusCode = 400;
+                _logger.LogError(ex, ex.Message);
+
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 var validationFailureResponse = new ValidationFailureResponse
                 {
                     Errors = ex.Errors.Select(x => new ValidationResponse
@@ -31,6 +32,8 @@ namespace Commander.Profiles
                 };
 
                 await context.Response.WriteAsJsonAsync(validationFailureResponse);
+
+                context.Response.ContentType = "application/json";
             }
         }
     }
