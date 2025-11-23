@@ -36,9 +36,6 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- script: dir $(System.DefaultWorkingDirectory)\drop
-  displayName: 'List artifact contents'
-
 - task: AzureWebApp@1
   displayName: "Deploy .zip to Azure Web App"
   inputs:
