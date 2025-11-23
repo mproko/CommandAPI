@@ -36,10 +36,13 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
+- script: dir $(System.DefaultWorkingDirectory)\drop
+  displayName: 'List artifact contents'
+
 - task: AzureWebApp@1
   displayName: "Deploy .zip to Azure Web App"
   inputs:
     azureSubscription: 'CommandAzureConnection'
     appType: 'webApp'
     appName: 'commandapi'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
