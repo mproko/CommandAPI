@@ -27,6 +27,7 @@ steps:
     publishWebProjects: false
     projects: '**/Commander/*.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: true
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish build artifacts'
@@ -41,4 +42,4 @@ steps:
     azureSubscription: 'CommandAzureConnection'
     appType: 'webApp'
     appName: 'commandapi'
-    package: '$(Pipeline.Workspace)/drop/**/*.zip'
+    package: '$(System.DefaultWorkingDirectory)/drop/**/*.zip'
