@@ -28,9 +28,17 @@ steps:
     projects: '**/Commander/*.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - task: AzureWebApp@1
+  displayName: "Deploy .zip to Azure Web App"
   inputs:
     azureSubscription: 'CommandAzureConnection'
     appType: 'webApp'
     appName: 'commandapi'
-    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    package: '$(Pipeline.Workspace)/drop/**/*.zip'
