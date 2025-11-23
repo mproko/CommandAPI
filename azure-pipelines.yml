@@ -42,4 +42,4 @@ steps:
     azureSubscription: 'CommandAzureConnection'
     appType: 'webApp'
     appName: 'commandapi'
-    package: '$(System.DefaultWorkingDirectory)/drop/**/*.zip'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
